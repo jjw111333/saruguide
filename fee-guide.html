@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SARUWA — 수수료 통합 안내</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --purple-deep: #5B1A6E;
+    --purple: #7B2D8E;
+    --purple-mid: #9B59B6;
+    --purple-light: #C39BD3;
+    --purple-soft: #F0E4F6;
+    --purple-wash: #F8F3FB;
+    --bg: #FDFBFE;
+    --card-bg: #FFFFFF;
+    --text: #2A1F33;
+    --text-sub: #6E6479;
+    --text-muted: #B8ADCA;
+    --border: rgba(123, 45, 142, 0.08);
+    --border-hover: rgba(123, 45, 142, 0.18);
+    --shadow-sm: 0 2px 12px rgba(91, 26, 110, 0.04);
+    --shadow-md: 0 4px 24px rgba(91, 26, 110, 0.07);
+    --radius: 14px;
+    --radius-sm: 10px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* === Ambient === */
+  .ambient {
+    position: fixed; inset: 0;
+    pointer-events: none; z-index: 0; overflow: hidden;
+  }
+  .ambient::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    top: -250px; left: 50%; transform: translateX(-50%);
+    background: radial-gradient(circle, rgba(155, 89, 182, 0.05) 0%, transparent 65%);
+  }
+
+  /* === Back Button === */
+  .back-bar {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(253, 251, 254, 0.92);
+    backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 20px;
+    display: flex; align-items: center; gap: 10px;
+    max-width: 100%;
+  }
+  .back-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13px; font-weight: 600; color: var(--purple);
+    text-decoration: none; transition: opacity 0.2s;
+  }
+  .back-btn:hover { opacity: 0.7; }
+  .back-btn svg { width: 16px; height: 16px; }
+  .back-bar-title {
+    font-size: 13px; font-weight: 700; color: var(--text);
+    margin-left: auto;
+  }
+
+  /* === Container === */
+  .container {
+    position: relative; z-index: 1;
+    max-width: 720px; margin: 0 auto;
+    padding: 32px 24px 64px;
+  }
+
+  /* === Page Header === */
+  .page-header {
+    text-align: center;
+    margin-bottom: 28px;
+    animation: fadeUp 0.5s both;
+  }
+  .page-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px; font-weight: 600;
+    color: var(--purple-deep);
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  .page-header p {
+    font-size: 13px; color: var(--text-sub);
+    font-weight: 300;
+  }
+
+  @keyframes fadeUp {
+    0% { opacity: 0; transform: translateY(8px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  /* === Nav Tabs === */
+  .nav-tabs {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    justify-content: center;
+    margin-bottom: 28px;
+    animation: fadeUp 0.5s 0.1s both;
+  }
+  .nav-tab {
+    padding: 7px 16px; border-radius: 20px;
+    font-size: 12px; font-weight: 600;
+    text-decoration: none;
+    border: 1.5px solid var(--border);
+    background: var(--card-bg); color: var(--text-sub);
+    transition: all 0.25s;
+  }
+  .nav-tab:hover, .nav-tab.active {
+    background: var(--purple); color: white;
+    border-color: var(--purple);
+  }
+
+  /* === Section === */
+  .section {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow-sm);
+    animation: fadeUp 0.4s both;
+  }
+  .section:nth-child(2) { animation-delay: 0.05s; }
+  .section:nth-child(3) { animation-delay: 0.1s; }
+  .section:nth-child(4) { animation-delay: 0.15s; }
+
+  .section-title {
+    font-size: 17px; font-weight: 800;
+    color: var(--purple-deep);
+    margin-bottom: 14px; padding-bottom: 10px;
+    border-bottom: 2px solid var(--purple-soft);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-title .icon { font-size: 19px; }
+
+  .badge-new {
+    display: inline-block;
+    font-size: 9px; font-weight: 700;
+    letter-spacing: 0.5px; padding: 2px 7px;
+    border-radius: 4px; text-transform: uppercase;
+    background: var(--purple-soft); color: var(--purple);
+    border: 1px solid rgba(123,45,142,0.1);
+  }
+
+  .sub-title {
+    font-size: 14px; font-weight: 700;
+    color: var(--text); margin: 20px 0 10px;
+    padding-left: 12px;
+    border-left: 3px solid var(--purple-mid);
+  }
+
+  .desc {
+    font-size: 13px; color: var(--text-sub);
+    margin-bottom: 14px;
+  }
+  .desc strong { color: var(--purple); font-weight: 700; }
+
+  /* === Tables === */
+  table {
+    width: 100%; border-collapse: collapse;
+    margin: 10px 0 14px; font-size: 13px;
+  }
+  thead th {
+    background: var(--purple);
+    color: white; padding: 10px 14px;
+    text-align: center; font-weight: 600;
+    font-size: 12px;
+  }
+  thead th:first-child { border-radius: var(--radius-sm) 0 0 0; }
+  thead th:last-child { border-radius: 0 var(--radius-sm) 0 0; }
+  tbody td {
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(123,45,142,0.06);
+    color: var(--text-sub);
+  }
+  tbody tr:nth-child(even) { background: var(--purple-wash); }
+  tbody tr:hover { background: var(--purple-soft); }
+  td:first-child { font-weight: 700; color: var(--text); white-space: nowrap; }
+
+  /* === Info Boxes === */
+  .info-box {
+    background: var(--purple-wash);
+    border-left: 3px solid var(--purple-mid);
+    padding: 14px 16px; margin: 12px 0;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    font-size: 12.5px; color: var(--text-sub);
+    line-height: 1.8;
+  }
+  .info-box strong { color: var(--purple); }
+  .info-box.warning {
+    background: #FFFBF0;
+    border-left-color: #E6A817;
+  }
+  .info-box.warning strong { color: #B8860B; }
+  .info-box.tip {
+    background: #F2FAF3;
+    border-left-color: #5BA865;
+  }
+  .info-box.tip strong { color: #3D7A44; }
+
+  .note {
+    font-size: 11.5px; color: var(--text-muted);
+    margin: 6px 0; padding-left: 2px;
+  }
+
+  /* === Flow === */
+  .flow {
+    display: flex; align-items: center;
+    justify-content: center; gap: 0;
+    margin: 18px 0; flex-wrap: wrap;
+  }
+  .flow-step {
+    background: var(--card-bg);
+    border: 1.5px solid var(--purple-soft);
+    border-radius: var(--radius-sm);
+    padding: 12px 16px; text-align: center;
+    min-width: 90px;
+    transition: border-color 0.3s;
+  }
+  .flow-step:hover { border-color: var(--purple-mid); }
+  .flow-step .step-num {
+    background: var(--purple);
+    color: white; width: 22px; height: 22px;
+    border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 800;
+    margin-bottom: 4px;
+  }
+  .flow-step .step-title {
+    font-weight: 700; font-size: 12px;
+    color: var(--purple-deep);
+  }
+  .flow-step .step-desc {
+    font-size: 10px; color: var(--text-muted); margin-top: 1px;
+  }
+  .flow-arrow {
+    font-size: 16px; color: var(--purple-light);
+    padding: 0 6px;
+  }
+
+  /* === FAQ === */
+  .faq-item {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    margin-bottom: 8px; overflow: hidden;
+  }
+  .faq-q {
+    background: var(--purple-wash);
+    padding: 12px 16px;
+    font-weight: 700; font-size: 13px;
+    color: var(--purple-deep);
+    cursor: pointer;
+    display: flex; align-items: center; gap: 8px;
+    transition: background 0.2s;
+  }
+  .faq-q:hover { background: var(--purple-soft); }
+  .faq-q::before {
+    content: "Q.";
+    background: var(--purple); color: white;
+    padding: 1px 7px; border-radius: 4px;
+    font-size: 11px; font-weight: 800; flex-shrink: 0;
+  }
+  .faq-a {
+    padding: 12px 16px 12px 46px;
+    font-size: 13px; color: var(--text-sub);
+    border-top: 1px solid var(--border);
+    line-height: 1.7;
+  }
+  .faq-a::before {
+    content: "A. "; font-weight: 700;
+    color: var(--purple-mid);
+  }
+
+  /* === Calc Examples === */
+  .calc-example {
+    background: var(--purple-wash);
+    border-radius: var(--radius-sm);
+    padding: 16px 18px; margin: 10px 0;
+  }
+  .calc-title {
+    font-weight: 700; color: var(--purple-deep);
+    font-size: 13px; margin-bottom: 6px;
+  }
+  .calc-formula {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 12px; color: var(--text-sub);
+    line-height: 2;
+  }
+  .calc-formula span {
+    background: var(--purple-soft);
+    padding: 2px 6px; border-radius: 4px;
+    color: var(--purple);
+  }
+
+  /* === Footer === */
+  .footer {
+    text-align: center; padding: 24px 0 20px;
+    border-top: 1px solid var(--border);
+    margin-top: 8px;
+  }
+  .footer-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 13px; font-weight: 600;
+    letter-spacing: 4px; color: var(--text-muted);
+    text-transform: uppercase;
+  }
+  .footer-sub {
+    font-size: 10px; color: var(--text-muted);
+    margin-top: 4px;
+  }
+  .footer-sub a {
+    color: var(--purple-mid); text-decoration: none;
+  }
+
+  /* === Responsive === */
+  @media (max-width: 600px) {
+    .container { padding: 24px 16px 48px; }
+    .section { padding: 22px 18px; }
+    .flow-step { min-width: 70px; padding: 10px 10px; }
+    .flow-step .step-title { font-size: 11px; }
+    .flow-arrow { padding: 0 3px; font-size: 14px; }
+    .nav-tab { font-size: 11px; padding: 6px 12px; }
+    table { font-size: 12px; }
+    thead th, tbody td { padding: 8px 10px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="ambient"></div>
+
+<!-- Sticky Back Bar -->
+<div class="back-bar">
+  <a href="index.html" class="back-btn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    돌아가기
+  </a>
+  <span class="back-bar-title">수수료 안내</span>
+</div>
+
+<div class="container">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <h1>수수료 통합 안내</h1>
+    <p>구매대행 · 배송대행 · 검수 · 배송 수수료를 한눈에 확인하세요</p>
+  </div>
+
+  <!-- Quick Navigation -->
+  <div class="nav-tabs">
+    <a class="nav-tab active" href="#service">서비스 수수료</a>
+    <a class="nav-tab" href="#shipping">배송수수료</a>
+    <a class="nav-tab" href="#premium">검수/프리미엄</a>
+    <a class="nav-tab" href="#netprint">넷프린트</a>
+    <a class="nav-tab" href="#calc">견적계산</a>
+  </div>
+
+  <!-- 결제 흐름 -->
+  <div class="section">
+    <div class="section-title"><span class="icon">💳</span> 결제 흐름</div>
+    <p class="desc">사루와의 모든 결제는 <strong>사루와머니</strong>를 통해 진행됩니다.</p>
+    <div class="flow">
+      <div class="flow-step">
+        <div class="step-num">1</div>
+        <div class="step-title">머니충전</div>
+        <div class="step-desc">계좌 입금</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="step-num">2</div>
+        <div class="step-title">1차 결제</div>
+        <div class="step-desc">상품값</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="step-num">3</div>
+        <div class="step-title">입고/합포장</div>
+        <div class="step-desc">일본창고</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="step-num">4</div>
+        <div class="step-title">2차 결제</div>
+        <div class="step-desc">배송비+수수료</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="step-num">5</div>
+        <div class="step-title">출하</div>
+        <div class="step-desc">항공/해운</div>
+      </div>
+    </div>
+    <div class="info-box">
+      <strong>1차 결제:</strong> 구매대행 → 상품값(세금포함) / 배송대행 → 1엔<br>
+      <strong>2차 결제:</strong> 국제배송운임 + 배송수수료 + 서비스수수료
+    </div>
+  </div>
+
+  <!-- 서비스 수수료 -->
+  <div class="section" id="service">
+    <div class="section-title"><span class="icon">💜</span> 서비스 수수료</div>
+    <p class="desc">신청서 개당 발생하며, 같은 옵션이 아닐 경우 개별 신청서 취급됩니다.</p>
+
+    <div class="sub-title">구매대행 수수료</div>
+    <table>
+      <thead><tr><th>대상 사이트</th><th>등급</th><th>수수료</th></tr></thead>
+      <tbody>
+        <tr><td>일반 사이트</td><td>전 등급 동일</td><td>¥100 / 신청서</td></tr>
+        <tr><td>플리마켓 (2,000엔 이상)</td><td>전 등급 동일</td><td>¥100 / 신청서</td></tr>
+        <tr><td rowspan="2">플리마켓 (2,000엔 미만)</td><td>사루VIP · 사루VVIP</td><td>¥100 / 신청서</td></tr>
+        <tr><td>사루뉴비 · 사루프렌드 · 사루패밀리</td><td>¥250 / 신청서</td></tr>
+        <tr><td>현지배송비</td><td>-</td><td>¥~ (착불, 대금수수료 등) 2차 결제 시 함께 부과</td></tr>
+      </tbody>
+    </table>
+    <p class="note">※ 같은 옵션이 아닐 경우 개별 신청서로 취급되어 각각 수수료가 발생합니다.</p>
+
+    <div class="sub-title">배송대행 수수료</div>
+    <table>
+      <thead><tr><th>구분</th><th>수수료</th><th>비고</th></tr></thead>
+      <tbody>
+        <tr><td>배송대행</td><td>¥250 / 트래킹번호</td><td>등급 관계없이 동일</td></tr>
+        <tr><td>대금상환 배송대행</td><td>¥250 + ¥200</td><td>사이트 문의 후 신청</td></tr>
+      </tbody>
+    </table>
+    <div class="info-box warning">
+      ⚠️ <strong>대금상환 배송대행</strong>의 경우, 기존 배송대행 수수료(¥250)와 별도로 <strong>¥200이 추가</strong> 청구됩니다. 반드시 <strong>사이트 문의 후 신청</strong>해 주세요.
+    </div>
+
+  </div>
+
+  <!-- 배송수수료 -->
+  <div class="section" id="shipping">
+    <div class="section-title"><span class="icon">📦</span> 배송수수료 (박스 사이즈별)</div>
+    <p class="desc">배송 시 <strong>1회 발생</strong>하는 수수료입니다. 박스비 + 물류비 + 기본포장비가 포함되어 있습니다.<br>주문건마다 / 상품 갯수마다 발생하는 비용이 <strong>아닙니다!</strong></p>
+
+    <table>
+      <thead><tr><th>구분</th><th>사이즈 기준</th><th>수수료</th></tr></thead>
+      <tbody>
+        <tr><td>특별</td><td>주문서 1개, 새박스 미사용, 160cm 미만</td><td>¥100</td></tr>
+        <tr><td>소형</td><td>세변 합 56cm 미만</td><td>¥200</td></tr>
+        <tr><td>중형</td><td>세변 합 56cm 초과 ~ 86cm 미만</td><td>¥350</td></tr>
+        <tr><td>대형</td><td>세변 합 86cm 초과 ~ 101cm 미만</td><td>¥500</td></tr>
+        <tr><td>초대형</td><td>세변 합 101cm 이상</td><td>¥1,000~ (작업시간 10분당 ¥300 + 부자재)</td></tr>
+      </tbody>
+    </table>
+
+    <div class="info-box warning">
+      ⚠️ <strong>규격 외 추가 비용:</strong><br>
+      • 무게 10kg마다 ¥500 추가<br>
+      • 멀티박스마다 ¥500 추가<br>
+      • 한 변 1m 이상 or 세변 합 160cm 이상 → ¥1,000<br>
+      • 사이즈가 큰 경우 <strong>해운특송</strong> 권장
+    </div>
+  </div>
+
+  <!-- 검수 / 프리미엄 -->
+  <div class="section" id="premium">
+    <div class="section-title"><span class="icon">🔍</span> 검수 / 프리미엄 서비스</div>
+
+    <table>
+      <thead><tr><th>구분</th><th>내용</th><th>수수료</th></tr></thead>
+      <tbody>
+        <tr><td>기본 검수</td><td>기본 포장 유지 (추가 포장보완 없음)</td><td>무료</td></tr>
+        <tr><td>프리미엄</td><td>사진 3장 + 상품 일치 확인 + 포장보완(에어캡 1겹)</td><td>¥250 / 주문서</td></tr>
+        <tr><td>입고 후 변경</td><td>입고완료 후 프리미엄 신청 시</td><td>¥500 (250+250)</td></tr>
+        <tr><td>추가 요청</td><td>개별 포장, 사진 추가 등</td><td>¥50~ (작업별)</td></tr>
+      </tbody>
+    </table>
+
+    <div class="sub-title">프리미엄 서비스 상세</div>
+    <div class="info-box">
+      <strong>📷 기본 제공:</strong> 사진 3장 + 주문 상품 일치 확인 + 포장보완(에어캡 1겹, 복수 상품은 한 묶음 1겹)<br><br>
+      <strong>📌 신청 시점:</strong> 1차 결제 시 가능. 입고대기 상태라면 문의를 통해 변경 가능<br>
+      <strong>📌 신품/미개봉:</strong> 상품 훼손 방지를 위해 비닐포장 등 제거하지 않은 채 진행<br>
+      <strong>📌 중고 상품:</strong> 특성상 하자 책임이 없으므로 상세 검수는 별도 문의<br>
+      <strong>📌 검수 불가:</strong> 전자제품 작동 여부, 정가품 확인, 일부 대형 상품
+    </div>
+  </div>
+
+  <!-- 넷프린트 -->
+  <div class="section" id="netprint">
+    <div class="section-title"><span class="icon">🖨️</span> 넷프린트 대행 수수료 <span class="badge-new">New</span></div>
+
+    <table>
+      <thead><tr><th>구분</th><th>수수료</th><th>비고</th></tr></thead>
+      <tbody>
+        <tr><td>구매수수료</td><td>¥100</td><td>배송대행으로 신청서 작성</td></tr>
+        <tr><td>QR코드 / 코드당</td><td>¥300</td><td>QR코드별로 나누어 신청</td></tr>
+        <tr><td>상품대금 (프린트 비용)</td><td>실비 청구</td><td>상품 가격으로 적용</td></tr>
+      </tbody>
+    </table>
+
+    <div class="info-box warning">
+      ⚠️ QR코드 추가 발생 시 건당 ¥300 추가<br>
+      ⚠️ 발급기한을 반드시 표기해 주세요 (기한 촉박 시 대행 불가할 수 있음)
+    </div>
+  </div>
+
+  <!-- 환율 -->
+  <div class="section">
+    <div class="section-title"><span class="icon">💱</span> 적용 환율</div>
+    <p class="desc">고시환율(송금환율 기준) <strong>+ 0.3원</strong>으로 실시간 반영됩니다.</p>
+    <p class="desc">은행마다 실시간 시스템상 약간의 오차가 발생할 수 있습니다.</p>
+    <div class="info-box tip">
+      💡 환율 확인 방법: 사이트 왼쪽 상단 <strong>'바로견적'</strong> 클릭!<br>
+      💡 2차 결제 대비하여 <strong>여유 있게 충전</strong>하여 구매하시길 권장합니다.
+    </div>
+  </div>
+
+  <!-- 견적 계산법 -->
+  <div class="section" id="calc">
+    <div class="section-title"><span class="icon">🧮</span> 예상 견적 계산법 <span class="badge-new">New</span></div>
+    <p class="desc">사이트 상단 <strong>'바로견적'</strong>에 예상무게와 수수료 포함 상품 총가격(세금, 일내비 포함)을 입력하면 항공/해운 배송비 포함 예상 견적을 확인할 수 있습니다. (관부가세 별도)</p>
+
+    <div class="calc-example">
+      <div class="calc-title">예시 1️⃣ 메루카리에서 2,000엔 상품 1개 구입</div>
+      <div class="calc-formula">
+        1차 = <span>2,000엔</span> × 환율<br>
+        2차 = <span>¥100(구매수수료)</span> + 해외배송비 + 배송수수료 × 환율
+      </div>
+    </div>
+
+    <div class="calc-example">
+      <div class="calc-title">예시 2️⃣ 메루카리에서 1,000엔 + 2,000엔 (각각 다른 링크) 구입</div>
+      <div class="calc-formula">
+        1차 = <span>1,000엔 + 2,000엔</span> × 환율<br>
+        2차 = <span>¥250 + ¥100(구매수수료)</span> + 해외배송비 + 배송수수료 × 환율
+      </div>
+      <p class="note" style="margin-top:6px;">※ 2,000엔 미만 상품 포함 → ¥250 적용</p>
+    </div>
+
+    <div class="calc-example">
+      <div class="calc-title">예시 3️⃣ 일반 사이트에서 1,000엔 같은 상품 10개 구입</div>
+      <div class="calc-formula">
+        1차 = <span>10,000엔</span> × 환율<br>
+        2차 = <span>¥100(구매수수료)</span> + 해외배송비 + 배송수수료 × 환율
+      </div>
+      <p class="note" style="margin-top:6px;">※ 같은 링크의 복수 구매는 주문서 1개 = ¥100</p>
+    </div>
+  </div>
+
+  <!-- FAQ 링크 -->
+  <div class="section" id="faq" style="text-align:center; padding: 24px;">
+    <div class="section-title" style="justify-content:center;"><span class="icon">❓</span> 자주 묻는 질문</div>
+    <p class="desc">수수료, 구매대행, 배송대행, 포장, 통관 등<br>카테고리별로 정리된 FAQ 페이지에서 확인하세요!</p>
+    <a href="faq.html" style="display:inline-block; margin-top:12px; padding:10px 28px; background:var(--purple); color:white; border-radius:24px; font-size:13px; font-weight:700; text-decoration:none; transition:opacity 0.2s;">FAQ 바로가기 →</a>
+  </div>
+
+  <!-- 기타 안내 -->
+  <div class="section">
+    <div class="section-title"><span class="icon">📋</span> 기타 안내</div>
+    <table>
+      <thead><tr><th>항목</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td>무료 보관</td><td>입고완료일로부터 <strong>30일</strong> (이후 1일당 ¥100)</td></tr>
+        <tr><td>착불/일본내배송비</td><td>추가 발생 시 2차 결제에 함께 부과</td></tr>
+      </tbody>
+    </table>
+    <p class="note">※ 보관/통관/관세에 대한 상세 안내는 <a href="#" style="color:var(--purple); font-weight:600;">보관·통관·관세 안내</a> 페이지를 참고해 주세요.</p>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-brand">Saruwa</div>
+    <div class="footer-sub">
+      궁금한 점은 <a href="https://cafe.naver.com/sin8383">1:1 문의</a>로 편하게 남겨주세요
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

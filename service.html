@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SARUWA — 서비스 안내</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --purple-deep: #5B1A6E;
+    --purple: #7B2D8E;
+    --purple-mid: #9B59B6;
+    --purple-light: #C39BD3;
+    --purple-soft: #F0E4F6;
+    --purple-wash: #F8F3FB;
+    --bg: #FDFBFE;
+    --card-bg: #FFFFFF;
+    --text: #2A1F33;
+    --text-sub: #6E6479;
+    --text-muted: #B8ADCA;
+    --border: rgba(123, 45, 142, 0.08);
+    --border-hover: rgba(123, 45, 142, 0.18);
+    --shadow-sm: 0 2px 12px rgba(91, 26, 110, 0.04);
+    --shadow-md: 0 4px 24px rgba(91, 26, 110, 0.07);
+    --radius: 14px;
+    --radius-sm: 10px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .ambient {
+    position: fixed; inset: 0;
+    pointer-events: none; z-index: 0; overflow: hidden;
+  }
+  .ambient::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    top: -250px; left: 50%; transform: translateX(-50%);
+    background: radial-gradient(circle, rgba(155, 89, 182, 0.05) 0%, transparent 65%);
+  }
+
+  /* === Back Button === */
+  .back-bar {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(253, 251, 254, 0.92);
+    backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 20px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .back-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13px; font-weight: 600; color: var(--purple);
+    text-decoration: none; transition: opacity 0.2s;
+  }
+  .back-btn:hover { opacity: 0.7; }
+  .back-btn svg { width: 16px; height: 16px; }
+  .back-bar-title {
+    font-size: 13px; font-weight: 700; color: var(--text);
+    margin-left: auto;
+  }
+
+  /* === Container === */
+  .container {
+    position: relative; z-index: 1;
+    max-width: 720px; margin: 0 auto;
+    padding: 32px 24px 64px;
+  }
+
+  /* === Page Header === */
+  .page-header {
+    text-align: center;
+    margin-bottom: 32px;
+    animation: fadeUp 0.5s both;
+  }
+  .page-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px; font-weight: 600;
+    color: var(--purple-deep);
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  .page-header p {
+    font-size: 13px; color: var(--text-sub);
+    font-weight: 300;
+  }
+
+  @keyframes fadeUp {
+    0% { opacity: 0; transform: translateY(8px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  /* === Hero Section (핵심 차별점) === */
+  .hero {
+    background: linear-gradient(135deg, var(--purple) 0%, var(--purple-mid) 100%);
+    border-radius: var(--radius);
+    padding: 32px 28px;
+    margin-bottom: 20px;
+    color: white;
+    text-align: center;
+    box-shadow: 0 4px 24px rgba(123, 45, 142, 0.2);
+    animation: fadeUp 0.5s 0.1s both;
+  }
+
+  .hero-emoji {
+    font-size: 40px;
+    margin-bottom: 14px;
+  }
+
+  .hero-title {
+    font-size: 19px;
+    font-weight: 800;
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+
+  .hero-desc {
+    font-size: 13px;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.8;
+    margin-bottom: 20px;
+  }
+
+  /* === Platform Tags === */
+  .platform-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+
+  .platform-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 7px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    color: white;
+  }
+
+  .platform-tag .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #2ECC71;
+    box-shadow: 0 0 6px rgba(46, 204, 113, 0.6);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .hero-note {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.55);
+    margin-top: 4px;
+  }
+
+  /* === CS Badge === */
+  .cs-banner {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: var(--shadow-sm);
+    animation: fadeUp 0.5s 0.2s both;
+  }
+
+  .cs-icon {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    background: var(--purple-wash);
+    border: 1px solid var(--purple-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+
+  .cs-body {
+    flex: 1;
+  }
+
+  .cs-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+
+  .cs-desc {
+    font-size: 12px;
+    color: var(--text-sub);
+    line-height: 1.6;
+  }
+
+  /* === Section Label === */
+  .section-label {
+    font-family: 'Playfair Display', serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-align: center;
+    margin-bottom: 16px;
+    animation: fadeUp 0.5s 0.3s both;
+  }
+
+  /* === Service Grid === */
+  .service-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 24px;
+    animation: fadeUp 0.5s 0.35s both;
+  }
+
+  .service-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 22px 18px;
+    text-align: center;
+    transition: all 0.25s;
+  }
+
+  .service-card:hover {
+    border-color: var(--border-hover);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+
+  .sc-icon {
+    font-size: 28px;
+    margin-bottom: 10px;
+  }
+
+  .sc-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .sc-desc {
+    font-size: 11px;
+    color: var(--text-sub);
+    line-height: 1.6;
+  }
+
+  /* === Note === */
+  .note-box {
+    margin-top: 24px;
+    background: var(--purple-wash);
+    border: 1px solid var(--purple-soft);
+    border-radius: var(--radius-sm);
+    padding: 16px 18px;
+    font-size: 12px;
+    color: var(--text-sub);
+    line-height: 1.8;
+    animation: fadeUp 0.5s 0.4s both;
+  }
+
+  .note-box strong {
+    color: var(--purple);
+  }
+
+  /* === Footer === */
+  .footer {
+    text-align: center;
+    padding: 32px 0 16px;
+    animation: fadeUp 0.5s 0.45s both;
+  }
+
+  .footer-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px; font-weight: 600;
+    color: var(--purple-light); letter-spacing: 2px;
+    margin-bottom: 6px;
+  }
+
+  .footer-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  .footer-sub a {
+    color: var(--purple-mid);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  /* === Responsive === */
+  @media (max-width: 400px) {
+    .service-grid {
+      grid-template-columns: 1fr;
+    }
+    .hero {
+      padding: 28px 20px;
+    }
+    .platform-tags {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="ambient"></div>
+
+<!-- Back Bar -->
+<div class="back-bar">
+  <a href="index.html" class="back-btn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    홈으로
+  </a>
+  <div class="back-bar-title">서비스 안내</div>
+</div>
+
+<div class="container">
+
+  <!-- Header -->
+  <div class="page-header">
+    <h1>✨ Our Service</h1>
+    <p>사루와가 제공하는 구매대행 서비스를 소개합니다</p>
+  </div>
+
+  <!-- Hero: 핵심 차별점 -->
+  <div class="hero">
+    <div class="hero-emoji">🌙</div>
+    <div class="hero-title">
+      놓치기 쉬운 심야 매물도<br>
+      잡아드립니다
+    </div>
+    <div class="hero-desc">
+      심야 · 새벽에도 대응 가능한 구매 시스템을 운영하고 있어<br>
+      시간에 구애받지 않고 원하는 상품을 확보할 수 있습니다.
+    </div>
+
+    <div class="platform-tags">
+      <div class="platform-tag"><span class="dot"></span> 메루카리</div>
+      <div class="platform-tag"><span class="dot"></span> 야후옥션</div>
+      <div class="platform-tag"><span class="dot"></span> 야후 프리마</div>
+    </div>
+
+    <div class="hero-note">※ 시스템 상황에 따라 일시적으로 지연될 수 있습니다</div>
+  </div>
+
+  <!-- CS 상시 대응 -->
+  <div class="cs-banner">
+    <div class="cs-icon">💬</div>
+    <div class="cs-body">
+      <div class="cs-title">문의 · 코멘트 상시 대응</div>
+      <div class="cs-desc">궁금한 점이나 요청사항은 시간에 관계없이 남겨주세요. 확인 즉시 답변드립니다.</div>
+    </div>
+  </div>
+
+  <!-- 기본 서비스 강점 -->
+  <div class="section-label">Service Benefits</div>
+
+  <div class="service-grid">
+
+    <div class="service-card">
+      <div class="sc-icon">📦</div>
+      <div class="sc-title">합포장 · 묶음배송</div>
+      <div class="sc-desc">여러 상품을 하나로 묶어 배송비를 절약할 수 있습니다</div>
+    </div>
+
+    <div class="service-card">
+      <div class="sc-icon">🔍</div>
+      <div class="sc-title">검수 · 프리미엄 서비스</div>
+      <div class="sc-desc">입고된 상품의 상태를 사진과 함께 꼼꼼하게 확인해드립니다</div>
+    </div>
+
+    <div class="service-card">
+      <div class="sc-icon">💰</div>
+      <div class="sc-title">합리적인 수수료</div>
+      <div class="sc-desc">신청서당 ¥100부터, 등급별 혜택까지 투명한 수수료 체계</div>
+    </div>
+
+    <div class="service-card">
+      <div class="sc-icon">🏪</div>
+      <div class="sc-title">연중무휴 운영</div>
+      <div class="sc-desc">별도 휴무일 없이 운영합니다. 일본 공휴일에는 출하만 중단됩니다</div>
+    </div>
+
+    <div class="service-card">
+      <div class="sc-icon">🛒</div>
+      <div class="sc-title">다양한 사이트 대응</div>
+      <div class="sc-desc">일반 쇼핑몰부터 프리마켓까지 폭넓은 구매 대행</div>
+    </div>
+
+    <div class="service-card">
+      <div class="sc-icon">🛡️</div>
+      <div class="sc-title">안전한 포장 · 배송</div>
+      <div class="sc-desc">파손 방지를 위한 꼼꼼한 포장과 안정적인 해외 배송</div>
+    </div>
+
+  </div>
+
+  <!-- Note -->
+  <div class="note-box">
+    <strong>※ 안내사항</strong><br>
+    • 수수료 및 서비스 상세 내용은 <a href="fee-guide.html" style="color:var(--purple); font-weight:600;">수수료 통합 안내</a>를 참고해 주세요.<br>
+    • 서비스 내용은 운영 상황에 따라 변경될 수 있으며, 최종 안내는 <strong>공식 공지사항</strong>을 우선합니다.
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-brand">Saruwa</div>
+    <div class="footer-sub">
+      궁금한 점은 <a href="https://cafe.naver.com/sin8383">1:1 문의</a>로 편하게 남겨주세요
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

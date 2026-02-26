@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SARUWA — 이용 가이드</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --purple-deep: #5B1A6E;
+    --purple: #7B2D8E;
+    --purple-mid: #9B59B6;
+    --purple-light: #C39BD3;
+    --purple-soft: #F0E4F6;
+    --purple-wash: #F8F3FB;
+    --bg: #FDFBFE;
+    --card-bg: #FFFFFF;
+    --text: #2A1F33;
+    --text-sub: #6E6479;
+    --text-muted: #B8ADCA;
+    --border: rgba(123, 45, 142, 0.08);
+    --border-hover: rgba(123, 45, 142, 0.18);
+    --shadow-sm: 0 2px 12px rgba(91, 26, 110, 0.04);
+    --shadow-md: 0 4px 24px rgba(91, 26, 110, 0.07);
+    --radius: 14px;
+    --radius-sm: 10px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .ambient {
+    position: fixed; inset: 0;
+    pointer-events: none; z-index: 0; overflow: hidden;
+  }
+  .ambient::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    top: -250px; left: 50%; transform: translateX(-50%);
+    background: radial-gradient(circle, rgba(155, 89, 182, 0.05) 0%, transparent 65%);
+  }
+
+  /* === Back Button === */
+  .back-bar {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(253, 251, 254, 0.92);
+    backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 20px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .back-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13px; font-weight: 600; color: var(--purple);
+    text-decoration: none; transition: opacity 0.2s;
+  }
+  .back-btn:hover { opacity: 0.7; }
+  .back-btn svg { width: 16px; height: 16px; }
+  .back-bar-title {
+    font-size: 13px; font-weight: 700; color: var(--text);
+    margin-left: auto;
+  }
+
+  /* === Container === */
+  .container {
+    position: relative; z-index: 1;
+    max-width: 720px; margin: 0 auto;
+    padding: 32px 24px 64px;
+  }
+
+  /* === Page Header === */
+  .page-header {
+    text-align: center;
+    margin-bottom: 28px;
+    animation: fadeUp 0.5s both;
+  }
+  .page-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px; font-weight: 600;
+    color: var(--purple-deep);
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  .page-header p {
+    font-size: 13px; color: var(--text-sub);
+    font-weight: 300;
+  }
+
+  @keyframes fadeUp {
+    0% { opacity: 0; transform: translateY(8px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  /* === Nav Tabs === */
+  .nav-tabs {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    justify-content: center;
+    margin-bottom: 28px;
+    animation: fadeUp 0.5s 0.1s both;
+  }
+  .nav-tab {
+    padding: 7px 16px; border-radius: 20px;
+    font-size: 12px; font-weight: 600;
+    text-decoration: none;
+    border: 1.5px solid var(--border);
+    background: var(--card-bg); color: var(--text-sub);
+    transition: all 0.25s;
+  }
+  .nav-tab:hover, .nav-tab.active {
+    background: var(--purple); color: white;
+    border-color: var(--purple);
+  }
+
+  /* === Section === */
+  .section {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow-sm);
+    animation: fadeUp 0.4s both;
+  }
+
+  .section-title {
+    font-size: 17px; font-weight: 800;
+    color: var(--purple-deep);
+    margin-bottom: 14px; padding-bottom: 10px;
+    border-bottom: 2px solid var(--purple-soft);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-title .icon { font-size: 19px; }
+
+  .desc {
+    font-size: 13px; color: var(--text-sub);
+    margin-bottom: 14px;
+  }
+  .desc strong { color: var(--purple); font-weight: 700; }
+
+  /* === Step Flow === */
+  .step-flow {
+    position: relative;
+    padding-left: 28px;
+  }
+
+  .step-flow::before {
+    content: '';
+    position: absolute;
+    left: 10px; top: 4px; bottom: 4px;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--purple-soft), var(--purple-light));
+    border-radius: 2px;
+  }
+
+  .step {
+    position: relative;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .step:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+
+  .step::before {
+    content: attr(data-num);
+    position: absolute;
+    left: -28px; top: 0;
+    width: 22px; height: 22px;
+    background: var(--purple);
+    color: white;
+    font-size: 10px; font-weight: 800;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 1;
+  }
+
+  .step-title {
+    font-size: 14px; font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .step-desc {
+    font-size: 12px; color: var(--text-sub);
+    line-height: 1.8;
+  }
+
+  .step-note {
+    margin-top: 8px;
+    font-size: 11px;
+    color: var(--text-muted);
+    background: var(--purple-wash);
+    border-radius: 6px;
+    padding: 8px 12px;
+    line-height: 1.7;
+  }
+
+  .step-note strong {
+    color: var(--purple);
+  }
+
+  /* === Grade Table === */
+  .grade-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin-top: 12px;
+  }
+
+  .grade-table th {
+    background: var(--purple);
+    color: white;
+    padding: 10px 8px;
+    font-weight: 700;
+    text-align: center;
+    font-size: 11px;
+  }
+
+  .grade-table th:first-child { border-radius: 8px 0 0 0; }
+  .grade-table th:last-child { border-radius: 0 8px 0 0; }
+
+  .grade-table td {
+    padding: 10px 8px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-sub);
+    font-size: 12px;
+  }
+
+  .grade-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .grade-table tr:hover td {
+    background: var(--purple-wash);
+  }
+
+  .grade-name {
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .grade-vip {
+    color: var(--purple);
+    font-weight: 800;
+  }
+
+  .grade-benefit {
+    font-size: 11px;
+    text-align: left;
+    line-height: 1.7;
+  }
+
+  /* === Payment Cards === */
+  .pay-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-top: 12px;
+  }
+
+  .pay-card {
+    background: var(--purple-wash);
+    border: 1px solid var(--purple-soft);
+    border-radius: var(--radius-sm);
+    padding: 18px 12px;
+    text-align: center;
+  }
+
+  .pay-icon {
+    font-size: 28px;
+    margin-bottom: 8px;
+  }
+
+  .pay-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .pay-desc {
+    font-size: 10px;
+    color: var(--text-sub);
+    line-height: 1.5;
+  }
+
+  /* === Note === */
+  .note {
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.8;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+  }
+  .note a {
+    color: var(--purple);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  /* === Footer === */
+  .footer {
+    text-align: center;
+    padding: 32px 0 16px;
+    animation: fadeUp 0.5s 0.5s both;
+  }
+
+  .footer-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px; font-weight: 600;
+    color: var(--purple-light); letter-spacing: 2px;
+    margin-bottom: 6px;
+  }
+
+  .footer-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  .footer-sub a {
+    color: var(--purple-mid);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  /* === Responsive === */
+  @media (max-width: 400px) {
+    .pay-grid {
+      grid-template-columns: 1fr;
+    }
+    .grade-table { font-size: 11px; }
+    .grade-table th, .grade-table td { padding: 8px 6px; }
+  }
+</style>
+</head>
+<body>
+<div class="ambient"></div>
+
+<!-- Back Bar -->
+<div class="back-bar">
+  <a href="index.html" class="back-btn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    홈으로
+  </a>
+  <div class="back-bar-title">이용 가이드</div>
+</div>
+
+<div class="container">
+
+  <!-- Header -->
+  <div class="page-header">
+    <h1>📋 User Guide</h1>
+    <p>사루와 이용 방법을 한눈에 확인하세요</p>
+  </div>
+
+  <!-- Nav -->
+  <div class="nav-tabs">
+    <a class="nav-tab" href="#buy">구매대행</a>
+    <a class="nav-tab" href="#delivery">배송대행</a>
+    <a class="nav-tab" href="#grade">등급 안내</a>
+    <a class="nav-tab" href="#payment">결제 방법</a>
+  </div>
+
+  <!-- ===================== 구매대행 ===================== -->
+  <div class="section" id="buy">
+    <div class="section-title"><span class="icon">🛍️</span> 구매대행 이용 흐름</div>
+    <p class="desc">일본 쇼핑몰의 상품을 사루와가 대신 구매하여 한국까지 배송해드립니다.</p>
+
+    <div class="step-flow">
+
+      <div class="step" data-num="1">
+        <div class="step-title">상품 검색</div>
+        <div class="step-desc">일본 쇼핑몰에서 원하는 제품을 검색합니다. 사루와 카페에서 일본 내 다양한 쇼핑몰 정보를 확인할 수 있습니다.</div>
+      </div>
+
+      <div class="step" data-num="2">
+        <div class="step-title">구매신청서 작성 + 1차결제</div>
+        <div class="step-desc">
+          회원가입 후 구매대행 신청서를 작성합니다.<br>
+          상품URL, 가격, 수량, 옵션을 입력하고 프리미엄 검수 선택 후 1차결제를 진행합니다.
+        </div>
+        <div class="step-note">
+          <strong>※</strong> 1차결제 완료 후 구매가 진행됩니다. 결제 후 취소·환불이 불가하오니 신중히 결제해 주세요.<br>
+          <strong>※</strong> 프리미엄 검수는 입고완료 전까지만 추가 가능합니다.
+        </div>
+      </div>
+
+      <div class="step" data-num="3">
+        <div class="step-title">입고대기</div>
+        <div class="step-desc">담당자가 빠르게 구매를 진행합니다. 구매 완료 후 현지배송을 거쳐 사루와 일본 창고에 도착하면 입고완료가 확정됩니다.</div>
+        <div class="step-note">
+          <strong>※</strong> 구매 불가 시 구매실패 탭으로 이동됩니다.<br>
+          <strong>※</strong> 현지배송 문제 발생 시 카페 문의로 안내해드립니다.
+        </div>
+      </div>
+
+      <div class="step" data-num="4">
+        <div class="step-title">입고완료 → 합포장 신청</div>
+        <div class="step-desc">사루와 현지 창고에 보관 중인 상품을 합포장 신청합니다. 신청과 동시에 해외배송 준비가 시작됩니다.</div>
+        <div class="step-note">
+          <strong>※</strong> 관세 금액을 미리 확인해 주세요.<br>
+          <strong>※</strong> 가격을 낮추는 언더벨류 요청은 허용되지 않습니다.
+        </div>
+      </div>
+
+      <div class="step" data-num="5">
+        <div class="step-title">합포장 진행</div>
+        <div class="step-desc">입고된 물품들을 규격박스에 합포장합니다. 이 단계부터는 상품 추가가 불가합니다.</div>
+      </div>
+
+      <div class="step" data-num="6">
+        <div class="step-title">2차결제 요청</div>
+        <div class="step-desc">합포장 완료 후 국제배송비가 책정됩니다. 배송수수료 등을 포함한 2차결제를 진행합니다.</div>
+        <div class="step-note">
+          <strong>※</strong> 2차결제 후에는 국제배송 지연 및 정보 수정이 불가합니다.
+        </div>
+      </div>
+
+      <div class="step" data-num="7">
+        <div class="step-title">국제배송 출하</div>
+        <div class="step-desc">2차결제 완료와 동시에 출하가 시작됩니다. 항공 또는 해운을 통해 한국으로 배송됩니다.</div>
+      </div>
+
+      <div class="step" data-num="8">
+        <div class="step-title">배송완료 🎉</div>
+        <div class="step-desc">무사히 물품을 수령하셨다면, 사루와 카페에 후기를 남겨주세요! 이벤트에 따라 선물을 지급해드립니다.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===================== 배송대행 ===================== -->
+  <div class="section" id="delivery">
+    <div class="section-title"><span class="icon">📦</span> 배송대행 이용 흐름</div>
+    <p class="desc">일본 쇼핑몰에서 <strong>직접 주문·결제</strong>한 상품을 사루와 창고로 받아 한국까지 배송해드립니다.</p>
+
+    <div class="step-flow">
+
+      <div class="step" data-num="1">
+        <div class="step-title">일본 쇼핑몰에서 직접 주문</div>
+        <div class="step-desc">
+          일본 쇼핑몰에서 직접 주문·결제합니다.<br>
+          배송지에는 <strong>사루와 마이페이지의 해외주소</strong>를 빠짐없이 입력해 주세요.
+        </div>
+        <div class="step-note">
+          <strong>※</strong> 주문번호(注文番号)를 반드시 메모해 주세요. 미입력 시 추적·분실 책임을 드리기 어렵습니다.
+        </div>
+      </div>
+
+      <div class="step" data-num="2">
+        <div class="step-title">배송대행 신청서 작성</div>
+        <div class="step-desc">
+          사루와 사이트에서 배송대행 신청서를 작성합니다.<br>
+          상품URL 1개 입력, 가격에 1엔 입력, 옵션란에 총금액/트래킹번호/주문번호를 정확히 기입 후 1차결제합니다.
+        </div>
+        <div class="step-note">
+          <strong>※</strong> 트래킹번호가 발급된 후 결제해 주세요.<br>
+          <strong>※</strong> 트래킹번호 1개당 신청서 1개로 작성합니다.
+        </div>
+      </div>
+
+      <div class="step" data-num="3">
+        <div class="step-title">입고대기</div>
+        <div class="step-desc">트래킹번호 기입 후 접수가 완료되면, 마이페이지 입고대기에서 현황을 확인할 수 있습니다.</div>
+      </div>
+
+      <div class="step" data-num="4">
+        <div class="step-title">입고완료 → 이후 구매대행과 동일</div>
+        <div class="step-desc">입고 확인 후 합포장 신청 → 2차결제 → 국제배송 → 수령까지 구매대행과 동일한 절차로 진행됩니다.</div>
+      </div>
+
+    </div>
+
+    <div class="note">
+      ※ 배송대행은 직접 구매하신 회원님께서 책임을 부담합니다. 환불·파손·오배송에 대한 책임은 사루와에서 지지 않습니다.
+    </div>
+  </div>
+
+  <!-- ===================== 등급 안내 ===================== -->
+  <div class="section" id="grade">
+    <div class="section-title"><span class="icon">⭐</span> 회원 등급 안내</div>
+    <p class="desc">해외배송 건수에 따라 자동 승급되며, 등급이 올라갈수록 더 많은 혜택을 받을 수 있습니다.</p>
+
+    <table class="grade-table">
+      <thead>
+        <tr>
+          <th>등급</th>
+          <th>승급 조건</th>
+          <th>주요 혜택</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="grade-name">사루뉴비</td>
+          <td>가입 시 자동</td>
+          <td class="grade-benefit">기본 수수료 적용</td>
+        </tr>
+        <tr>
+          <td class="grade-name">사루프렌드</td>
+          <td>배송 1건</td>
+          <td class="grade-benefit">해외배송비 할인 시작</td>
+        </tr>
+        <tr>
+          <td class="grade-name">사루패밀리</td>
+          <td>배송 5건</td>
+          <td class="grade-benefit">해외배송비 추가 할인</td>
+        </tr>
+        <tr>
+          <td class="grade-vip">사루VIP</td>
+          <td>배송 20건</td>
+          <td class="grade-benefit">플리마켓 전 가격대 ¥100 수수료 + 해외배송비 할인 + 특별 혜택</td>
+        </tr>
+        <tr>
+          <td class="grade-vip">사루VVIP</td>
+          <td>배송 50건</td>
+          <td class="grade-benefit">플리마켓 전 가격대 ¥100 수수료 + 최대 해외배송비 할인 + 특별 혜택</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note">
+      ※ 등급별 수수료 상세 내용은 <a href="fee-guide.html">수수료 통합 안내</a>를 참고해 주세요.<br>
+      ※ VIP 이상 등급의 특별 혜택은 공지사항 및 카페를 통해 안내됩니다.
+    </div>
+  </div>
+
+  <!-- ===================== 결제 방법 ===================== -->
+  <div class="section" id="payment">
+    <div class="section-title"><span class="icon">💳</span> 결제 방법 안내</div>
+    <p class="desc">사루와에서는 <strong>사루와머니</strong>로만 결제가 가능합니다. 사루와머니를 미리 충전한 후 1차·2차 결제를 진행합니다.</p>
+
+    <div class="pay-grid">
+      <div class="pay-card" style="grid-column: 1 / -1; background: linear-gradient(135deg, var(--purple), var(--purple-mid)); color: white; border: none;">
+        <div class="pay-icon" style="font-size: 36px;">💰</div>
+        <div class="pay-title" style="color: white; font-size: 18px;">사루와머니</div>
+        <div class="pay-desc" style="color: rgba(255,255,255,0.8); font-size: 13px;">모든 결제는 사루와머니로 진행됩니다<br>마이페이지에서 충전 후 이용하세요</div>
+      </div>
+      <div class="pay-card">
+        <div class="pay-icon">🏦</div>
+        <div class="pay-title">계좌이체</div>
+        <div class="pay-desc">국민은행 · 우리은행<br>입금으로 충전</div>
+      </div>
+      <div class="pay-card">
+        <div class="pay-icon">💳</div>
+        <div class="pay-title">신용카드</div>
+        <div class="pay-desc">신용카드로<br>머니 충전 가능</div>
+      </div>
+    </div>
+
+    <div class="note">
+      ※ 사루와머니 충전 및 환불은 마이페이지에서 신청 가능합니다.<br>
+      ※ 입금 계좌: 국민은행 652337-01-008871 / 우리은행 1005-404-572082 (예금주: 김지혜(사루와))
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-brand">Saruwa</div>
+    <div class="footer-sub">
+      궁금한 점은 <a href="https://cafe.naver.com/sin8383">1:1 문의</a>로 편하게 남겨주세요
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

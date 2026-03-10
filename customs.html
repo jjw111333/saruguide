@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SARUWA — 보관 · 통관 · 관세</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --purple-deep: #5B1A6E;
+    --purple: #7B2D8E;
+    --purple-mid: #9B59B6;
+    --purple-light: #C39BD3;
+    --purple-soft: #F0E4F6;
+    --purple-wash: #F8F3FB;
+    --bg: #FDFBFE;
+    --card-bg: #FFFFFF;
+    --text: #2A1F33;
+    --text-sub: #8A7D96;
+    --text-muted: #B8ADCA;
+    --border: rgba(123, 45, 142, 0.08);
+    --border-hover: rgba(123, 45, 142, 0.2);
+    --shadow-sm: 0 2px 12px rgba(91, 26, 110, 0.05);
+    --shadow-md: 0 4px 24px rgba(91, 26, 110, 0.08);
+    --radius: 16px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .ambient {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .ambient::before {
+    content: '';
+    position: absolute;
+    width: 700px; height: 700px;
+    top: -300px; left: 50%;
+    transform: translateX(-50%);
+    background: radial-gradient(circle, rgba(155, 89, 182, 0.06) 0%, transparent 65%);
+    animation: ambientFloat 15s ease-in-out infinite;
+  }
+  .ambient::after {
+    content: '';
+    position: absolute;
+    width: 500px; height: 500px;
+    bottom: -200px; right: -150px;
+    background: radial-gradient(circle, rgba(123, 45, 142, 0.04) 0%, transparent 65%);
+    animation: ambientFloat 20s ease-in-out infinite reverse;
+  }
+  @keyframes ambientFloat {
+    0%, 100% { opacity: 1; transform: translateX(-50%) scale(1); }
+    50% { opacity: 0.7; transform: translateX(-50%) scale(1.15); }
+  }
+
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 0 24px 48px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 48px 0 28px;
+    animation: fadeUp 0.6s both;
+  }
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-sub);
+    text-decoration: none;
+    margin-bottom: 24px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+    transition: all 0.2s;
+  }
+  .back-btn:hover {
+    color: var(--purple);
+    border-color: var(--border-hover);
+  }
+  .page-icon {
+    width: 52px; height: 52px;
+    background: linear-gradient(135deg, #FF8C00, #FFB347);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    margin: 0 auto 16px;
+    box-shadow: 0 4px 20px rgba(255, 140, 0, 0.2);
+    animation: logoReveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  @keyframes logoReveal {
+    0% { opacity: 0; transform: scale(0.7) rotate(-10deg); }
+    100% { opacity: 1; transform: scale(1) rotate(0); }
+  }
+  .page-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--purple-deep);
+    letter-spacing: 2px;
+  }
+  .page-sub {
+    font-size: 12px;
+    color: var(--text-sub);
+    margin-top: 6px;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+  }
+
+  @keyframes fadeUp {
+    0% { opacity: 0; transform: translateY(10px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  .divider {
+    width: 36px; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--purple-mid), transparent);
+    margin: 16px auto 28px;
+    border-radius: 1px;
+  }
+
+  /* Section Label */
+  .section-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--purple-mid);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    padding-left: 2px;
+  }
+
+  /* 관세컷 카드 - 강조형 */
+  .tariff-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow-sm);
+    animation: fadeUp 0.5s 0.15s both;
+  }
+
+  .tariff-highlight {
+    background: linear-gradient(135deg, #FFF8E7, #FFF3D4);
+    border: 1.5px solid #FFD966;
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  .tariff-highlight-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: #B8860B;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .tariff-amount {
+    font-size: 22px;
+    font-weight: 900;
+    color: #8B4513;
+    letter-spacing: -0.5px;
+    line-height: 1.1;
+  }
+  .tariff-amount-sub {
+    font-size: 11px;
+    color: #A0522D;
+    margin-top: 4px;
+    font-weight: 400;
+  }
+  .tariff-cafe-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 12px;
+    background: #03C75A;
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+    border-radius: 10px;
+    text-decoration: none;
+    margin-bottom: 14px;
+    transition: opacity 0.2s;
+  }
+  .tariff-cafe-btn:hover { opacity: 0.88; }
+
+  .tariff-update-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    color: #2E7D32;
+    background: #E8F5E9;
+    border: 1px solid #C8E6C9;
+    border-radius: 20px;
+    padding: 3px 10px;
+    margin-top: 8px;
+  }
+
+  .tariff-notice {
+    background: #FFF8E7;
+    border-left: 3px solid #FFD966;
+    border-radius: 0 8px 8px 0;
+    padding: 12px 14px;
+    margin-top: 12px;
+    font-size: 12px;
+    color: #7D6608;
+    line-height: 1.7;
+  }
+  .tariff-notice strong {
+    color: #5D4E00;
+    font-weight: 700;
+  }
+
+  /* 일반 카드 */
+  .info-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow-sm);
+    animation: fadeUp 0.5s 0.2s both;
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .card-header-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .icon-orange { background: #FFF3E0; }
+  .icon-blue   { background: #E3F2FD; }
+  .icon-green  { background: #E8F5E9; }
+  .icon-red    { background: #FFEBEE; }
+
+  .card-header-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .card-header-sub {
+    font-size: 11px;
+    color: var(--text-sub);
+    margin-top: 2px;
+  }
+
+  /* Step 스타일 */
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .step {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .step-num {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--purple), var(--purple-mid));
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .step-content {
+    flex: 1;
+  }
+  .step-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.4;
+  }
+  .step-desc {
+    font-size: 11px;
+    color: var(--text-sub);
+    margin-top: 3px;
+    line-height: 1.6;
+  }
+  .step-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--purple);
+    text-decoration: none;
+    background: var(--purple-wash);
+    border: 1px solid var(--purple-soft);
+    border-radius: 6px;
+    padding: 4px 10px;
+    margin-top: 6px;
+    transition: all 0.2s;
+  }
+  .step-link:hover {
+    background: var(--purple-soft);
+  }
+
+  /* FAQ 스타일 */
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .faq-item {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .faq-q {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 14px 16px;
+    background: var(--purple-wash);
+    cursor: pointer;
+  }
+  .faq-q-badge {
+    font-size: 11px;
+    font-weight: 900;
+    color: var(--purple);
+    background: var(--purple-soft);
+    border: 1px solid rgba(123,45,142,0.15);
+    border-radius: 6px;
+    padding: 2px 7px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .faq-q-text {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.5;
+    flex: 1;
+  }
+  .faq-a {
+    padding: 12px 16px 14px;
+    background: var(--card-bg);
+  }
+  .faq-a-inner {
+    display: flex;
+    gap: 10px;
+  }
+  .faq-a-badge {
+    font-size: 11px;
+    font-weight: 900;
+    color: #2E7D32;
+    background: #E8F5E9;
+    border: 1px solid #C8E6C9;
+    border-radius: 6px;
+    padding: 2px 7px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .faq-a-text {
+    font-size: 12px;
+    color: var(--text-sub);
+    line-height: 1.7;
+    flex: 1;
+  }
+
+  /* 합산과세 카드 */
+  .merge-card {
+    background: linear-gradient(135deg, #EDE7F6, #F3E5F5);
+    border: 1px solid #D1C4E9;
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    margin-bottom: 12px;
+    animation: fadeUp 0.5s 0.25s both;
+  }
+  .merge-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--purple-deep);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .merge-badge {
+    font-size: 9px;
+    font-weight: 700;
+    color: white;
+    background: var(--purple);
+    border-radius: 4px;
+    padding: 2px 6px;
+    letter-spacing: 0.5px;
+  }
+  .merge-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .merge-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: white;
+    border-radius: 10px;
+    padding: 10px 12px;
+  }
+  .merge-icon {
+    font-size: 16px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .merge-content {}
+  .merge-row-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+  .merge-row-desc {
+    font-size: 11px;
+    color: var(--text-sub);
+    line-height: 1.6;
+  }
+
+  /* 면책 공지 */
+  .disclaimer {
+    background: #FFEBEE;
+    border: 1px solid #FFCDD2;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    animation: fadeUp 0.5s 0.3s both;
+  }
+  .disclaimer-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .disclaimer-text {
+    font-size: 12px;
+    color: #C62828;
+    line-height: 1.7;
+    font-weight: 400;
+  }
+  .disclaimer-text strong { font-weight: 700; }
+
+  /* Notice */
+  .notice {
+    text-align: center;
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.8;
+    padding: 20px 16px;
+    border-top: 1px solid var(--border);
+    margin-top: 8px;
+  }
+  .notice strong { color: var(--purple); font-weight: 600; }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 16px 0 0;
+  }
+  .footer-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 5px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+  .footer-sub {
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-top: 6px;
+  }
+  .footer-sub a {
+    color: var(--purple-mid);
+    text-decoration: none;
+  }
+  .footer-sub a:hover { color: var(--purple); }
+
+  @media (max-width: 380px) {
+    .wrapper { padding: 0 18px 40px; }
+    .tariff-amount { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="ambient"></div>
+
+<div class="wrapper">
+
+  <!-- Header -->
+  <div class="header">
+    <a href="index.html" class="back-btn">← 홈으로</a>
+    <div class="page-icon">📦</div>
+    <div class="page-title">보관 · 통관 · 관세</div>
+    <div class="page-sub">관세컷 기준 · 합산과세 · 통관 주의사항</div>
+  </div>
+  <div class="divider"></div>
+
+
+  <!-- 관세컷 현황 -->
+  <div class="section-label">관세컷 현황</div>
+  <div class="tariff-card">
+
+    <div class="tariff-highlight">
+      <div class="tariff-highlight-label">현재 면세 기준 금액</div>
+      <div class="tariff-amount">매주 변동</div>
+      <div class="tariff-amount-sub">최신 금액은 아래 카페 공지에서 확인해 주세요</div>
+      <div class="tariff-update-badge">🔄 매주 업데이트</div>
+    </div>
+
+    <a href="https://cafe.naver.com/sin8383/60824" target="_blank" class="tariff-cafe-btn">
+      📢 최신 관세컷 공지 확인하기
+    </a>
+
+    <div class="tariff-notice">
+      <strong>💡 배송 신청 시 권장사항</strong><br>
+      면세를 원하신다면 공지 금액보다 <strong>500~1,000엔 여유</strong>를 두고 신청해 주세요.<br><br>
+      달러 환산 과정에서 차익이 발생할 수 있고, 기준은 <strong>한국 공항 입항일</strong> 기준이므로 배송 중 관세컷이 변동될 수 있습니다.
+    </div>
+
+  </div>
+
+
+  <!-- 관세컷 계산 방법 -->
+  <div class="section-label">관세컷 계산하는 법</div>
+  <div class="info-card">
+    <div class="card-header">
+      <div class="card-header-icon icon-blue">🔍</div>
+      <div>
+        <div class="card-header-title">직접 확인하는 방법</div>
+        <div class="card-header-sub">관세청 공식 사이트에서 실시간 조회 가능</div>
+      </div>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">유니패스(관세청) 접속</div>
+          <div class="step-desc">아래 링크에서 적용기간을 확인하세요. <strong>입항일 기준</strong>으로 적용됩니다.</div>
+          <a href="https://unipass.customs.go.kr/csp/index.do" target="_blank" class="step-link">🔗 유니패스 바로가기</a>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">관세청 면세 기준 확인</div>
+          <div class="step-desc">아래 링크에서 국가를 <strong>일본</strong>으로 변경하면 오른쪽에 <strong>150달러 미만 관세컷</strong> 금액이 표시됩니다.</div>
+          <a href="https://www.customs.go.kr/kcs/ad/tax/BuyTaxCalculation.do" target="_blank" class="step-link">🔗 면세 기준 조회</a>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">매주 변동 확인</div>
+          <div class="step-desc">관세컷은 <strong>매주 변동</strong>됩니다. 사루와 카페 공지에서도 매주 업데이트를 확인하실 수 있어요.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- 합산과세 폐지 안내 -->
+  <div class="section-label">합산과세 안내</div>
+  <div class="merge-card">
+    <div class="merge-title">
+      합산과세 폐지 안내
+      <span class="merge-badge">중요</span>
+    </div>
+    <div class="merge-rows">
+      <div class="merge-row">
+        <div class="merge-icon">✈️</div>
+        <div class="merge-content">
+          <div class="merge-row-title">항공편</div>
+          <div class="merge-row-desc">이전 배송건이 항공 조회된 이후에 다음 배송건을 결제해 주세요.</div>
+        </div>
+      </div>
+      <div class="merge-row">
+        <div class="merge-icon">🚢</div>
+        <div class="merge-content">
+          <div class="merge-row-title">해운(선박)편</div>
+          <div class="merge-row-desc">이전 배송건이 선적지 출발된 이후에 다음 배송건을 결제해 주세요.</div>
+        </div>
+      </div>
+      <div class="merge-row">
+        <div class="merge-icon">🏢</div>
+        <div class="merge-content">
+          <div class="merge-row-title">다른 대행사 동시 이용 시</div>
+          <div class="merge-row-desc">공급자가 다르면 같은 날 입항되어도 합산과세 되지 않습니다.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- 면책 공지 -->
+  <div class="disclaimer">
+    <div class="disclaimer-icon">⚠️</div>
+    <div class="disclaimer-text">
+      관세는 <strong>관세청에서 부과하는 법적 의무</strong>입니다. 환율 변동, 관세컷 변경 등으로 면세가 되지 못하더라도 이는 <strong>고객님이 부담하는 해외직구 관련 법적 책임</strong>이며, 사루와의 수익이 아닙니다.
+    </div>
+  </div>
+
+
+  <!-- FAQ -->
+  <div class="section-label">자주 묻는 질문</div>
+  <div class="info-card" style="padding: 16px;">
+    <div class="faq-list">
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <span class="faq-q-badge">Q</span>
+          <span class="faq-q-text">가격을 낮추거나 나눠서 신청하면 관세가 안 나오나요?<br><span style="font-size:11px;font-weight:400;color:var(--text-sub)">예: 5,000엔 상품을 2,500엔씩 나눠서 신청</span></span>
+        </div>
+        <div class="faq-a">
+          <div class="faq-a-inner">
+            <span class="faq-a-badge">A</span>
+            <span class="faq-a-text"><strong>불가능합니다.</strong> 구매 시점 기준으로 5,000엔에 구매하셨다면 임의로 나눈다고 가격이 낮아지지 않습니다.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          <span class="faq-q-badge">Q</span>
+          <span class="faq-q-text">합배송으로 묶으면 묶은 기준으로 통관되나요?</span>
+        </div>
+        <div class="faq-a">
+          <div class="faq-a-inner">
+            <span class="faq-a-badge">A</span>
+            <span class="faq-a-text"><strong>한 박스에 들어있는 총금액 기준</strong>으로 통관됩니다. 미관세를 원하신다면 합배송 신청 전 여유있게 금액을 확인해 주세요.</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- Notice -->
+  <div class="notice">
+    본 페이지의 관세컷 금액은 정기적으로 업데이트되나<br>
+    실제 통관 결과와 다를 수 있습니다.<br>
+    최종 기준은 <strong>관세청 공식 안내</strong>를 우선합니다.
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-brand">Saruwa</div>
+    <div class="footer-sub">
+      궁금한 점은 <a href="https://cafe.naver.com/sin8383">1:1 문의</a>로 편하게 남겨주세요
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

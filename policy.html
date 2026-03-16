@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>이용 정책 — 사루와</title>
+<link rel="icon" href="https://jjw111333.github.io/saruguide/favicon.ico">
+<style>
+  :root {
+    --primary: #E8533C;
+    --primary-light: #FFF0EE;
+    --bg: #F8F7F4;
+    --surface: #FFFFFF;
+    --border: #EDEAE4;
+    --border2: #D8D4CC;
+    --text: #1A1814;
+    --text2: #6B665E;
+    --text3: #9E9890;
+    --danger-bg: #FEF2F2; --danger-text: #B91C1C; --danger-border: #FECACA;
+    --warning-bg: #FFFBEB; --warning-text: #92400E; --warning-border: #FDE68A;
+    --success-bg: #F0FDF4; --success-text: #166534; --success-border: #BBF7D0;
+    --info-bg: #EFF6FF; --info-text: #1E40AF; --info-border: #BFDBFE;
+    --radius: 14px; --radius-sm: 8px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  /* Header */
+  .header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 56px; position: sticky; top: 0; z-index: 100;
+  }
+  .header-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .header-logo img { height: 28px; }
+  .header-logo span { font-size: 15px; font-weight: 700; color: var(--text); }
+  .header-back {
+    font-size: 13px; color: var(--text2); text-decoration: none;
+    display: flex; align-items: center; gap: 4px; padding: 6px 12px;
+    border: 1px solid var(--border); border-radius: 20px;
+    transition: all 0.15s;
+  }
+  .header-back:hover { border-color: var(--border2); color: var(--text); }
+
+  .container { max-width: 720px; margin: 0 auto; padding: 32px 20px 60px; }
+
+  /* Page title */
+  .page-head { margin-bottom: 28px; }
+  .page-badge {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    padding: 4px 12px; border-radius: 20px; margin-bottom: 10px;
+    background: var(--primary-light); color: var(--primary);
+    letter-spacing: 0.04em;
+  }
+  .page-title { font-size: 24px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+  .page-sub { font-size: 14px; color: var(--text2); line-height: 1.7; }
+
+  /* Notice box */
+  .notice-box {
+    background: var(--surface); border: 1px solid var(--border);
+    border-left: 4px solid var(--primary);
+    border-radius: var(--radius); padding: 20px 22px; margin-bottom: 28px;
+  }
+  .notice-box p { font-size: 14px; color: var(--text2); line-height: 1.8; }
+  .notice-box p + p { margin-top: 8px; }
+
+  .section-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--text3); margin-bottom: 12px;
+  }
+
+  /* Summary cards */
+  .card-row { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 10px; margin-bottom: 28px; }
+  @media(max-width:560px){ .card-row { grid-template-columns: 1fr; } }
+  .policy-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
+  .policy-card.danger { background: var(--danger-bg); border-color: var(--danger-border); }
+  .policy-card.success { background: var(--success-bg); border-color: var(--success-border); }
+  .card-icon { font-size: 20px; margin-bottom: 8px; }
+  .card-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 5px; }
+  .card-body { font-size: 12px; color: var(--text2); line-height: 1.6; }
+  .card-body.danger { color: var(--danger-text); }
+  .card-body.success { color: var(--success-text); }
+
+  /* Flow */
+  .flow-wrap { margin-bottom: 28px; }
+  .flow-steps { display: flex; flex-direction: column; }
+  .flow-step { display: flex; align-items: flex-start; gap: 12px; padding: 12px 16px; background: var(--surface); border: 1px solid var(--border); border-bottom: none; }
+  .flow-step:first-child { border-radius: var(--radius) var(--radius) 0 0; }
+  .flow-step:last-child { border-radius: 0 0 var(--radius) var(--radius); border-bottom: 1px solid var(--border); }
+  .flow-step.block { background: var(--danger-bg); border-color: var(--danger-border); }
+  .flow-step.block2 { background: var(--warning-bg); border-color: var(--warning-border); }
+  .step-num { width: 24px; height: 24px; border-radius: 50%; background: var(--bg); border: 1px solid var(--border2); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: var(--text2); flex-shrink: 0; margin-top: 1px; }
+  .step-num.block { background: var(--danger-bg); border-color: var(--danger-border); color: var(--danger-text); }
+  .step-num.block2 { background: var(--warning-bg); border-color: var(--warning-border); color: var(--warning-text); }
+  .step-content { flex: 1; }
+  .step-name { font-size: 13px; font-weight: 700; color: var(--text); }
+  .step-desc { font-size: 12px; color: var(--text2); margin-top: 2px; line-height: 1.5; }
+  .step-desc.block { color: var(--danger-text); }
+  .step-desc.block2 { color: var(--warning-text); }
+  .step-badge { font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 20px; flex-shrink: 0; margin-top: 2px; }
+  .step-badge.danger { background: var(--danger-bg); color: var(--danger-text); border: 1px solid var(--danger-border); }
+  .step-badge.warning { background: var(--warning-bg); color: var(--warning-text); border: 1px solid var(--warning-border); }
+
+  /* FAQ */
+  .faq-wrap { margin-bottom: 28px; }
+  .faq-item { border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 8px; overflow: hidden; background: var(--surface); }
+  .faq-q { padding: 14px 16px; font-size: 14px; font-weight: 600; color: var(--text); cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 8px; user-select: none; }
+  .faq-q:hover { background: var(--bg); }
+  .faq-chevron { font-size: 11px; color: var(--text3); transition: transform 0.2s; flex-shrink: 0; }
+  .faq-item.open .faq-chevron { transform: rotate(180deg); }
+  .faq-a { display: none; padding: 14px 16px; font-size: 13px; color: var(--text2); line-height: 1.75; border-top: 1px solid var(--border); }
+  .faq-item.open .faq-a { display: block; }
+  .faq-tag { display: inline-block; font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 20px; margin-right: 6px; margin-bottom: 10px; }
+  .faq-tag.danger { background: var(--danger-bg); color: var(--danger-text); border: 1px solid var(--danger-border); }
+  .faq-tag.warning { background: var(--warning-bg); color: var(--warning-text); border: 1px solid var(--warning-border); }
+  .faq-tag.info { background: var(--info-bg); color: var(--info-text); border: 1px solid var(--info-border); }
+
+  .infobox { background: var(--bg); border-radius: var(--radius-sm); padding: 12px 14px; margin-top: 10px; font-size: 12px; color: var(--text2); line-height: 1.7; border: 1px solid var(--border); }
+  .infobox b { font-weight: 700; color: var(--text); }
+  .process-steps { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+  .process-step { display: flex; align-items: flex-start; gap: 10px; padding: 9px 12px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 12px; color: var(--text2); }
+  .process-num { width: 20px; height: 20px; border-radius: 50%; background: var(--info-bg); color: var(--info-text); font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; border: 1px solid var(--info-border); }
+  .photo-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 6px; margin-top: 10px; }
+  .photo-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 8px 12px; font-size: 12px; color: var(--text2); }
+
+  /* Premium */
+  .premium-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; margin-bottom: 28px; }
+  .premium-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .premium-badge { font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 20px; background: var(--warning-bg); color: var(--warning-text); border: 1px solid var(--warning-border); }
+  .premium-title { font-size: 15px; font-weight: 700; color: var(--text); }
+  .premium-notice { font-size: 13px; color: var(--text2); line-height: 1.7; margin-bottom: 14px; padding: 12px 14px; background: var(--bg); border-radius: var(--radius-sm); border: 1px solid var(--border); }
+  .premium-items { display: flex; flex-direction: column; gap: 10px; }
+  .premium-item { display: flex; gap: 10px; align-items: flex-start; }
+  .p-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--primary); margin-top: 7px; flex-shrink: 0; }
+  .p-text { font-size: 13px; color: var(--text2); line-height: 1.6; }
+  .p-text b { font-weight: 700; color: var(--text); }
+
+  .footer-note { text-align: center; font-size: 12px; color: var(--text3); padding-top: 16px; border-top: 1px solid var(--border); }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <a href="index.html" class="header-logo">
+    <span>사루와</span>
+  </a>
+  <a href="index.html" class="header-back">← 홈으로</a>
+</header>
+
+<div class="container">
+  <div class="page-head">
+    <div class="page-badge">공식 정책</div>
+    <div class="page-title">이용 정책</div>
+    <div class="page-sub">교환 · 환불 · 취소 · 파손에 관한 공식 규정입니다.<br>주문 전 반드시 확인해 주시기 바랍니다.</div>
+  </div>
+
+  <div class="notice-box">
+    <p>이 안내는 저희가 서비스를 줄이거나 귀찮아서 드리는 내용이 아닙니다.</p>
+    <p>그동안 명확한 기준 없이 모든 문의에 개별 대응해오다 보니 업무에 혼선이 생기고, 오히려 여러분께 더 느리고 불명확한 서비스로 돌아오는 상황이 반복되었습니다. 더 명확하고 신뢰할 수 있는 서비스를 드리기 위해 기준을 다시 정립하게 되었습니다.</p>
+  </div>
+
+  <div class="section-label">핵심 원칙</div>
+  <div class="card-row">
+    <div class="policy-card danger">
+      <div class="card-icon">🚫</div>
+      <div class="card-title">신청 즉시 취소 불가</div>
+      <div class="card-body danger">1차 완료 시점에 현지 샵 주문이 진행됩니다. 일본 샵 내규상 주문 후 취소는 불가합니다.</div>
+    </div>
+    <div class="policy-card">
+      <div class="card-icon">📦</div>
+      <div class="card-title">발송 그대로 입고 처리</div>
+      <div class="card-body">출품자가 보낸 상태 그대로 트래킹 번호 확인 후 입고 작업을 진행합니다.</div>
+    </div>
+    <div class="policy-card success">
+      <div class="card-icon">↩</div>
+      <div class="card-title">품절 시 전액 환불</div>
+      <div class="card-body success">샵측 품절·주문불가 통보 시 자동 취소 후 전액 환불 처리해 드립니다.</div>
+    </div>
+  </div>
+
+  <div class="section-label">주문 진행 단계</div>
+  <div class="flow-wrap">
+    <div class="flow-steps">
+      <div class="flow-step">
+        <div class="step-num">1</div>
+        <div class="step-content"><div class="step-name">고객 신청 (1차 완료)</div><div class="step-desc">주문 내용·수량·옵션을 최종 확인해 주세요</div></div>
+      </div>
+      <div class="flow-step block">
+        <div class="step-num block">2</div>
+        <div class="step-content"><div class="step-name">현지 샵 주문 진행</div><div class="step-desc block">이 시점부터 취소·변경 불가 — 일본 샵 내규상 주문 후 취소를 허용하지 않습니다</div></div>
+        <div class="step-badge danger">취소 불가</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">3</div>
+        <div class="step-content"><div class="step-name">입고 대기</div><div class="step-desc">출품자가 창고로 발송 중인 상태 — 트래킹 번호로 진행 상황 확인</div></div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">4</div>
+        <div class="step-content"><div class="step-name">입고 완료</div><div class="step-desc">창고 도착 — 프리미엄 신청 시 이 단계에서 사진 3장 촬영·업로드</div></div>
+      </div>
+      <div class="flow-step block2">
+        <div class="step-num block2">5</div>
+        <div class="step-content"><div class="step-name">합포장 신청</div><div class="step-desc block2">신청 후 구성 변경 불가 — 상품 구성을 반드시 최종 확인해 주세요</div></div>
+        <div class="step-badge warning">변경 불가</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">6</div>
+        <div class="step-content"><div class="step-name">2차 요청 · 결제</div><div class="step-desc">국제 배송비 등 추가 비용 청구</div></div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">7</div>
+        <div class="step-content"><div class="step-name">출고 · 한국 배송</div><div class="step-desc">발송 완료 — 외박스 훼손 확인 시 개봉 전 사루와 문의</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">자주 묻는 질문</div>
+  <div class="faq-wrap">
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)"><span>주문 후 취소하고 싶어요. 가능한가요?</span><span class="faq-chevron">▼</span></div>
+      <div class="faq-a"><span class="faq-tag danger">취소 불가</span><br>1차 신청이 완료되는 즉시 일본 현지 샵에 주문이 진행됩니다. 대부분의 일본 샵은 주문 후 취소를 허용하지 않으며, 사루와도 임의로 취소 처리를 할 수 없는 구조입니다.<br><br>단, 샵측에서 품절 또는 주문 불가 통보가 오는 경우에는 자동 취소 후 전액 환불해 드립니다.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)"><span>도착한 물건이 주문한 것과 달라요.</span><span class="faq-chevron">▼</span></div>
+      <div class="faq-a"><span class="faq-tag warning">프리미엄 여부 확인</span><br>출품자 또는 샵측의 오배송에 해당합니다. 구매확정 처리 이후에는 현지 판매자와의 교섭이 사실상 어렵습니다.<br><br>프리미엄 서비스를 신청하셨다면 입고 단계에서 사진으로 상태 확인이 가능하며, 구매확정 전 출품자에게 문의를 진행할 수 있습니다. 단, 현지 판매자의 대응 결과는 보장되지 않습니다.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)"><span>상품이 파손된 채로 도착했어요. (입고 당시 파손)</span><span class="faq-chevron">▼</span></div>
+      <div class="faq-a"><span class="faq-tag warning">프리미엄 여부 확인</span><br>출품자 발송 그대로 입고 처리되므로, 입고 당시 상태의 별도 확인은 이루어지지 않습니다.<br><br>프리미엄 서비스를 신청하셨다면 입고 사진을 통해 상태를 직접 확인하실 수 있으며, 이상 발견 시 구매확정 전 출품자에게 문의를 진행할 수 있습니다.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)"><span>상품이 파손된 채로 도착했어요. (해외 배송 중 파손)</span><span class="faq-chevron">▼</span></div>
+      <div class="faq-a">
+        <span class="faq-tag info">사루와 파손 정책 적용</span><br>
+        해외 배송 중 발생한 파손은 사루와 파손 처리 정책에 따라 접수하시면, 파손 대책 양식을 수령 후 배송사에 문의 접수를 진행합니다. 처리 결과는 배송사 기준 및 조사 결과에 따라 안내드립니다.
+        <div class="process-steps">
+          <div class="process-step"><div class="process-num">1</div>카페 문의로 파손 접수 (수령 후 7일 이내)</div>
+          <div class="process-step"><div class="process-num">2</div>파손 대책 양식 작성 및 사루와 제출</div>
+          <div class="process-step"><div class="process-num">3</div>사루와에서 배송사에 문의 접수 진행</div>
+          <div class="process-step"><div class="process-num">4</div>배송사 조사 결과에 따라 개별 안내</div>
+        </div>
+        <div class="infobox"><b>접수 시 필수 자료</b> — 자료 미비 시 배송사 접수가 어렵습니다.</div>
+        <div class="photo-grid">
+          <div class="photo-item">운송장 사진 2장</div>
+          <div class="photo-item">운송장 부착 박스 사진 2장</div>
+          <div class="photo-item">박스 외부 사진 2장</div>
+          <div class="photo-item">박스 내 완충재 사진 2장</div>
+          <div class="photo-item">파손 상품 사진 2장</div>
+          <div class="photo-item">전체 개봉 사진 (최대한 많이)</div>
+        </div>
+        <div class="infobox" style="margin-top:8px"><b>유리·도자기·전자기기·고가(300만원 초과) 상품 등</b>은 운송사 규정상 파손 접수 제외 품목에 해당할 수 있습니다.</div>
+      </div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)"><span>주문한 수량보다 적게 도착했어요.</span><span class="faq-chevron">▼</span></div>
+      <div class="faq-a"><span class="faq-tag warning">프리미엄 여부 확인</span><br>출품자 발송 그대로 트래킹 번호 기준으로 입고 처리되며, 개별 수량 정밀 확인은 이루어지지 않습니다.<br><br>프리미엄 서비스 신청 시 입고 단계에서 수량을 사진으로 확인해 드립니다.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)"><span>정품이 아닌 것 같아요.</span><span class="faq-chevron">▼</span></div>
+      <div class="faq-a"><span class="faq-tag danger">사루와 처리 범위 외</span><br>사루와는 상품의 진위 여부를 판별하는 감정 서비스를 제공하지 않습니다. 구매 전 판매자를 직접 확인하시기 바랍니다.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)"><span>단순 변심으로 반품하고 싶어요.</span><span class="faq-chevron">▼</span></div>
+      <div class="faq-a"><span class="faq-tag danger">구매대행 구조상 진행이 어렵습니다</span><br>구매대행 특성상 단순 변심으로 인한 반품·교환은 진행이 어렵습니다. 주문 전 상품 정보를 충분히 확인해 주세요.</div>
+    </div>
+  </div>
+
+  <div class="section-label">프리미엄 서비스 안내</div>
+  <div class="premium-card">
+    <div class="premium-header">
+      <div class="premium-title">쿠션 역할의 선택형 서비스</div>
+      <div class="premium-badge">250엔/건</div>
+    </div>
+    <div class="premium-notice">모든 문제를 해결해드리는 완전 보장 서비스가 아닙니다. 파손이 걱정되거나 상태 확인이 중요한 상품, 고가 상품을 주문하실 때 이런 서비스가 있다는 것을 알고 활용해 보세요.</div>
+    <div class="premium-items">
+      <div class="premium-item"><div class="p-dot"></div><div class="p-text"><b>입고 시 사진 3장 촬영·업로드</b> — 고객님이 직접 상태 확인 가능</div></div>
+      <div class="premium-item"><div class="p-dot"></div><div class="p-text"><b>구매확정 전 샵·출품자 문의 가능</b> — 단, 현지 판매자의 대응 결과는 보장되지 않습니다</div></div>
+      <div class="premium-item"><div class="p-dot"></div><div class="p-text"><b>기본 포장 보강</b> — 추가 보강이 필요한 경우 별도 견적 문의</div></div>
+      <div class="premium-item"><div class="p-dot"></div><div class="p-text"><b>파손 발생 시</b> — 파손 대책 양식 접수 후 배송사 문의 진행, 처리 결과는 배송사 조사에 따라 안내</div></div>
+      <div class="premium-item"><div class="p-dot"></div><div class="p-text">신청 시점: 주문 시 함께 · 입고대기까지 카페 문의로 전환 · 입고완료 후 추가 수수료 발생</div></div>
+    </div>
+  </div>
+
+  <div class="footer-note">문의는 카페 쪽지 또는 댓글로 남겨주세요 · 사루와 운영팀</div>
+</div>
+
+<script>
+function toggleFaq(el){ el.closest('.faq-item').classList.toggle('open'); }
+</script>
+</body>
+</html>

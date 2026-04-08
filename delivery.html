@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>일내 배송 조회 · 사루와</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f7f7f5;
+      color: #1a1a1a;
+      min-height: 100vh;
+      padding: 0 0 60px;
+    }
+
+    .header {
+      background: #fff;
+      border-bottom: 1px solid #e8e8e4;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .back-btn {
+      font-size: 20px;
+      text-decoration: none;
+      color: #666;
+      line-height: 1;
+    }
+
+    .header-title {
+      font-size: 17px;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+
+    .container {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 24px 16px;
+    }
+
+    .notice-box {
+      background: #fff8ec;
+      border: 1px solid #ffe4a0;
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 24px;
+      font-size: 13px;
+      color: #7a5c00;
+      line-height: 1.6;
+    }
+
+    .notice-box strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 13px;
+    }
+
+    .section {
+      background: #fff;
+      border: 1px solid #e8e8e4;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #999;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-bottom: 4px;
+    }
+
+    .section-desc {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .input-row input {
+      flex: 1;
+      height: 46px;
+      border: 1.5px solid #e0e0da;
+      border-radius: 10px;
+      padding: 0 14px;
+      font-size: 15px;
+      color: #1a1a1a;
+      background: #fafaf8;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .input-row input:focus {
+      border-color: #c8a96e;
+      background: #fff;
+    }
+
+    .input-row input::placeholder {
+      color: #bbb;
+    }
+
+    .search-btn {
+      height: 46px;
+      padding: 0 18px;
+      background: #1a1a1a;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s;
+    }
+
+    .search-btn:hover { background: #333; }
+    .search-btn:active { background: #000; }
+
+    .result-box {
+      margin-top: 14px;
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-size: 14px;
+      line-height: 1.7;
+      display: none;
+    }
+
+    .result-box.found {
+      background: #f0faf4;
+      border: 1px solid #b2e0c2;
+      color: #1a5c2e;
+    }
+
+    .result-box.not-found {
+      background: #fff5f5;
+      border: 1px solid #ffc0c0;
+      color: #8b1a1a;
+    }
+
+    .result-box.loading {
+      background: #f5f5f3;
+      border: 1px solid #e0e0da;
+      color: #666;
+    }
+
+    .result-date {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1a5c2e;
+      margin-bottom: 4px;
+    }
+
+    .result-notice {
+      font-size: 12px;
+      color: #2e7d4f;
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid #c8e8d4;
+      line-height: 1.6;
+    }
+
+    .result-notice .asterisk {
+      color: #888;
+      margin-top: 4px;
+      display: block;
+    }
+
+    .divider {
+      height: 1px;
+      background: #f0f0ec;
+      margin: 8px 0 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <a href="index.html" class="back-btn">←</a>
+    <div class="header-title">일내 배송 조회</div>
+  </div>
+
+  <div class="container">
+
+    <div class="notice-box">
+      <strong>📌 조회 전 확인해주세요</strong>
+      일내 배송 조회는 구매하신 지 3일 이후 건으로 문의 부탁드리며,
+      현지 상황에 따라 정보가 없을 수 있습니다.
+    </div>
+
+    <!-- 일반사이트 -->
+    <div class="section">
+      <div class="section-label">일반 사이트</div>
+      <div class="section-title">오더번호로 조회</div>
+      <div class="section-desc">사루와 사이트에서 확인되는 주문번호를 입력해주세요</div>
+      <div class="input-row">
+        <input type="text" id="input-normal" placeholder="예: 614014" />
+        <button class="search-btn" onclick="search('normal')">조회</button>
+      </div>
+      <div class="result-box" id="result-normal"></div>
+    </div>
+
+    <!-- 플리마켓 -->
+    <div class="section">
+      <div class="section-label">플리마켓</div>
+      <div class="section-title">상품번호로 조회</div>
+      <div class="section-desc">야후옥션 · 메루카리 · 야후프리마 상품번호를 입력해주세요</div>
+      <div class="input-row">
+        <input type="text" id="input-flea" placeholder="예: m42600974233 / r1223510434" />
+        <button class="search-btn" onclick="search('flea')">조회</button>
+      </div>
+      <div class="result-box" id="result-flea"></div>
+    </div>
+
+  </div>
+
+  <script>
+    var GAS_URL = "https://script.google.com/macros/s/AKfycbxSQUH1-LEOQC-_N76oQHBX9kvYR2hV-mNvAyM-mEPP5_Tk0T3YP9OuxcqPQCi70i4ldQ/exec";
+
+    function search(type) {
+      var inputEl = document.getElementById("input-" + type);
+      var resultEl = document.getElementById("result-" + type);
+      var itemId = inputEl.value.trim();
+
+      if (!itemId) {
+        showResult(resultEl, "not-found", "번호를 입력해주세요.");
+        return;
+      }
+
+      showResult(resultEl, "loading", "조회 중...");
+
+      fetch(GAS_URL + "?itemId=" + encodeURIComponent(itemId))
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+          if (data.status === "found") {
+            var isFlea = type === "flea";
+            var html = '<div class="result-date">📦 ' + data.shippedDate + ' 출고</div>';
+            html += '<div class="result-notice">';
+            html += '출고 후 사루와 창고 도착까지 영업일 기준 1~3일 소요됩니다.';
+            if (isFlea) {
+              html += '<span class="asterisk">* 정형외 우편의 경우 5~7일 정도 소요됩니다.</span>';
+            }
+            html += '</div>';
+            showResultHTML(resultEl, "found", html);
+          } else {
+            showResult(resultEl, "not-found", "아직 발송되지 않은 상품입니다.");
+          }
+        })
+        .catch(function() {
+          showResult(resultEl, "not-found", "조회 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+        });
+    }
+
+    function showResult(el, type, text) {
+      el.className = "result-box " + type;
+      el.style.display = "block";
+      el.textContent = text;
+    }
+
+    function showResultHTML(el, type, html) {
+      el.className = "result-box " + type;
+      el.style.display = "block";
+      el.innerHTML = html;
+    }
+
+    document.getElementById("input-normal").addEventListener("keydown", function(e) {
+      if (e.key === "Enter") search("normal");
+    });
+    document.getElementById("input-flea").addEventListener("keydown", function(e) {
+      if (e.key === "Enter") search("flea");
+    });
+  </script>
+
+</body>
+</html>

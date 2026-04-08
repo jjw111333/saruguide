@@ -78,10 +78,18 @@
     }
 
     .section-title {
-      font-size: 16px;
-      font-weight: 700;
+      font-size: 22px;
+      font-weight: 800;
       color: #1a1a1a;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
+      letter-spacing: -0.3px;
+    }
+
+    .section-sub {
+      font-size: 13px;
+      font-weight: 600;
+      color: #444;
+      margin-bottom: 12px;
     }
 
     .section-desc {
@@ -209,8 +217,9 @@
     <!-- 일반사이트 -->
     <div class="section">
       <div class="section-label">일반 사이트</div>
-      <div class="section-title">오더번호로 조회</div>
-      <div class="section-desc">사루와 사이트에서 확인되는 주문번호를 입력해주세요</div>
+      <div class="section-title">일반 사이트 조회</div>
+      <div class="section-sub">오더번호로 조회</div>
+      <div class="section-desc">마이페이지에서 확인되는 오더번호를 입력해주세요</div>
       <div class="input-row">
         <input type="text" id="input-normal" placeholder="예: 614014" />
         <button class="search-btn" onclick="search('normal')">조회</button>
@@ -221,7 +230,8 @@
     <!-- 플리마켓 -->
     <div class="section">
       <div class="section-label">플리마켓</div>
-      <div class="section-title">상품번호로 조회</div>
+      <div class="section-title">플리마켓 조회</div>
+      <div class="section-sub">상품번호로 조회</div>
       <div class="section-desc">야후옥션 · 메루카리 · 야후프리마 상품번호를 입력해주세요</div>
       <div class="input-row">
         <input type="text" id="input-flea" placeholder="예: m42600974233 / r1223510434" />
